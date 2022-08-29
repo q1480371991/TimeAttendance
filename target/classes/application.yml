@@ -4,3 +4,4 @@ spring:
     url: jdbc:mysql://localhost:3306/timeattendancedb
     username: root
     password: "020623"
+    type: com.alibaba.druid.pool.DruidDataSource
