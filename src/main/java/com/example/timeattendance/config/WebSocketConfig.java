@@ -14,7 +14,9 @@ public class WebSocketConfig {
      * @return
      */
     /** 扫描注解了@ServerEndpoint注解的类 */
-//    @Bean
+    //这个bean被扫入的话会导致test运行不了
+    //需要test的时候需要注释掉这个@Bean
+    @Bean
     public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }

@@ -23,6 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatEndpoint {
 
     private static UserService userService;
+    private static final String PING_STRING="0x9";
+    private static final String PONG_STRING="0xA";
+
 
     @Autowired
     public void setUserService(UserService userService){
@@ -227,6 +230,13 @@ public class ChatEndpoint {
                 e.printStackTrace();
             }
         }
+
+
+    }
+    @OnError
+    public void onError(Session session,Throwable error){
+        System.out.println("OnError");
+        onClose(session);
     }
 
 }
