@@ -15,7 +15,8 @@ public class TimeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean flag=true;
-        if(TimeUtils.istime()){
+        TimeUtils.istime();
+        if(true){
             flag=true;
             System.out.println("是否符合打卡时间："+flag);
 

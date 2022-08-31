@@ -100,34 +100,54 @@ public class ChatEndpoint {
             onlineUsers.put(studentid,this);
             User user = (User) userService.SelectOneById(studentid).getData();
             Message message = new Message();
-            message.setType(2);
             message.setName(user.getName());
             message.setId(user.getId().toString());
             message.setStudentid(studentid);
             message.setAvatar("one.jpg");//先写死
-
             joinNotice.put(user.getStudentId(),message);
-        }
+
+            //上线提醒
+            Set<String> studentids = onlineUsers.keySet();
+            for (String stid : studentids){
+
+                ChatEndpoint chatEndpoint = onlineUsers.get(stid);
+                //获取推送对象
+                RemoteEndpoint.Basic basicRemote = chatEndpoint.session.getBasicRemote();
 
 
+                try {
+                    String jsondata = MessageUtils.getMessage(true, joinNotice);
+                    basicRemote.sendText(jsondata);
 
-        //上线提醒
-        Set<String> studentids = onlineUsers.keySet();
-        for (String stid : studentids){
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-            ChatEndpoint chatEndpoint = onlineUsers.get(stid);
+
+        }else{
+            //有用户重复连接
+            Message message = new Message();
+            message.setType(5);
+            message.setMessage(studentid+"已进入聊天室");
+
+            ChatEndpoint chatEndpoint = onlineUsers.get(studentid);
             //获取推送对象
             RemoteEndpoint.Basic basicRemote = chatEndpoint.session.getBasicRemote();
 
 
             try {
-                String jsondata = MessageUtils.getMessage(true, joinNotice);
+                String jsondata = MessageUtils.getMessage(true, message);
                 basicRemote.sendText(jsondata);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+
+
+
 
 
     }
@@ -190,8 +210,6 @@ public class ChatEndpoint {
 
         joinNotice.remove(studentid);
         System.out.println(studentid+"websocket断开连接onClose");
-        System.out.println(onlineUsers.keySet());
-        System.out.println(joinNotice.keySet());
         //下线提醒
         Set<String> studentids = onlineUsers.keySet();
         for (String stid : studentids){

@@ -253,23 +253,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //举报功能
-    public boolean Report(String reportid,String reporterid){
-        boolean flag=true;
-        User user = userMapper.selectById(reportid);
-        User user1 =(User) LogoutByid(user.getStudentId()).getData();
-        TimeRecord timeRecord = new TimeRecord(user1.getId(), user1.getStartTime(), user1.getEndTime()
-                , Double.parseDouble(TimeUtils.TimeCalculate(user1.getStartTime(), user1.getEndTime())),2,reporterid);
-        timeRecord.setReporterid(reporterid);
-        timeRecord.setStatus(2);
-        int i = timeRecordMapper.insert(timeRecord);
-        if(i==1)
-        {
-            System.out.println(reporterid+"举报成功");
-            flag=true;
-        }else{
-            System.out.println(reporterid+"举报失败");
+    public R Report(String reportid,String reporterid){
+        boolean flag=false;
+        R r = new R();
+        User user = (User) SelectOneById(reportid).getData();
+
+        if(user!=null&&user.getStatus()==1){
+            User user1 =(User) LogoutByid(user.getStudentId()).getData();
+            TimeRecord timeRecord = new TimeRecord(user1.getId(), user1.getStartTime(), user1.getEndTime()
+                    , Double.parseDouble(TimeUtils.TimeCalculate(user1.getStartTime(), user1.getEndTime())),2,reporterid);
+            timeRecord.setReporterid(reporterid);
+            timeRecord.setStatus(2);
+            int i = timeRecordMapper.insert(timeRecord);
+            if(i==1)
+            {
+                System.out.println(reporterid+"举报"+reportid+"成功");
+                r.setMsg(reporterid+"举报"+reportid+"成功");
+                flag=true;
+            }else{
+                System.out.println(reporterid+"举报"+reportid+"失败");
+                r.setMsg(reporterid+"举报"+reportid+"失败");
+                flag=false;
+            }
+        }else if(user==null){
+            System.out.println(reportid+"不存在");
+            r.setMsg(reportid+"不存在");
+            flag=false;
+        }else if(user.getStatus()==0){
+            System.out.println(reportid+"未签到");
+            r.setMsg(reportid+"未签到");
             flag=false;
         }
-        return flag;
+        r.setFlag(flag);
+        return r;
     }
 }

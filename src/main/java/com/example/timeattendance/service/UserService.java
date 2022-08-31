@@ -21,6 +21,6 @@ public interface UserService {
     public Collection<User> SelectByGrade(String grade,String isonline);
     public Collection<TimeRecord> GetMyTimeRecord(String userid);
     public boolean AddUser(User user);
-    public boolean Report(String studentid,String reportid);
+    public R Report(String studentid,String reportid);
 
 }

@@ -21,9 +21,8 @@ public class UserController {
     @RequestMapping("/report")
     public R ReportOthers(@RequestBody Reporter reporter)
     {
-        R r = new R(userService.Report(reporter.getReportid(), reporter.getReporterid()));
-        r.setMsg("举报成功");
-        r.setCode(code.REPORT_OK);
+        System.out.println(reporter);
+        R r = userService.Report(reporter.getReportid(), reporter.getReporterid());
         return r;
     }
 
