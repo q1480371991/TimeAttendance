@@ -46,23 +46,6 @@ public class UserController {
                    HttpSession httpSession)
     {
         httpSession.setAttribute("studentid",studentid);
-//        System.out.println(session);
-
-
-
-//        User user = userService.LoginByid(studentid);
-//        R r = new R();
-//        if(user!=null)
-//        {
-//            r.setFlag(true);
-//            r.setData(user);
-//            r.setMsg("签到成功");
-//        }else {
-//            r.setFlag(false);
-//            r.setData(user);
-//            r.setMsg("签到失败");
-//        }
-
         return userService.LoginByid(studentid);
     }
 
@@ -70,22 +53,6 @@ public class UserController {
     public R Logout(@PathParam("studentid") String studentid,
                     HttpSession session)
     {
-//        System.out.println(session);
-//        System.out.println(session.getAttribute("username")+"testsession");
-
-//        R r = new R();
-//        User user = (User)userService.LogoutByid(studentid).getData();
-//        r.setData(user);
-//        if(user!=null)
-//        {
-//            r.setFlag(true);
-//            userService.AddTime(user);
-//            String duration = TimeUtils.TimeCalculate(user.getStartTime(), user.getEndTime());
-//            r.setMsg("本次签到时长:"+duration+"h");
-//        }
-//        else r.setFlag(false);
-//
-//        return r;
         R r =userService.LogoutByid(studentid);
         User user=(User) r.getData();
         if(r.getMsg().equals(studentid+"签退成功")){
@@ -94,8 +61,6 @@ public class UserController {
             r.setRecordtime(TimeUtils.TimeCalculate(user.getStartTime(),user.getEndTime()));
         }
 
-//
-//        String s = TimeUtils.TimeCalculate(user.getStartTime(), user.getEndTime());
 
         return r;
     }

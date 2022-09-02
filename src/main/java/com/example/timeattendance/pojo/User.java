@@ -33,4 +33,10 @@ public class User {
     @ExcelIgnore
     @TableField(value = "totaltime")
     private double TotalTime;
+    @ExcelIgnore
+    @TableField(value = "qq")
+    private String qq;
+    @ExcelIgnore
+    @TableField(value = "avatar")
+    private String avatar;
 }
