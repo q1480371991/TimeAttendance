@@ -5,3 +5,17 @@ spring:
     username: root
     password: "020623"
     type: com.alibaba.druid.pool.DruidDataSource
+  mail:
+    host: smtp.qq.com
+    username: 1480371991@qq.com
+    password: dttuygwdghgvbagc
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    port: 465
+    protocol: smtps
