@@ -197,7 +197,7 @@ public class ChatEndpoint {
                 e.printStackTrace();
             }
 
-        }else if(recmsg.getType()==6){
+        }else if(recmsg.getType()==6&&recmsg.getMessage()==PING_STRING){
             System.out.println("检测到心跳");
             //心跳
             ChatEndpoint chatEndpoint = onlineUsers.get(recmsg.getFrom());
