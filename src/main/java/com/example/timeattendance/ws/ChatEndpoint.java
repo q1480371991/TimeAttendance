@@ -158,10 +158,11 @@ public class ChatEndpoint {
 
     @OnMessage
     public void onMessage(String msg,Session session) throws IOException {
-        System.out.println(msg);
+
         ObjectMapper objectMapper = new ObjectMapper();
         Set<String> studentids = onlineUsers.keySet();
         Message recmsg = objectMapper.readValue(msg, Message.class);
+        if(recmsg.getType()!=6)System.out.println(msg);
         if(recmsg.getType()==1&&recmsg.getTo()==null){
             //群聊消息
             for (String studentid: studentids
@@ -196,6 +197,20 @@ public class ChatEndpoint {
                 e.printStackTrace();
             }
 
+        }else if(recmsg.getType()==6){
+            System.out.println("检测到心跳");
+            //心跳
+            ChatEndpoint chatEndpoint = onlineUsers.get(recmsg.getFrom());
+            //获取推送对象
+            RemoteEndpoint.Basic basicRemote = chatEndpoint.session.getBasicRemote();
+            recmsg.setMessage(PONG_STRING);
+            try {
+                String jsondata = MessageUtils.getMessage(true, recmsg);
+                basicRemote.sendText(jsondata);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
