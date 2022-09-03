@@ -7,6 +7,7 @@ import com.example.timeattendance.mapper.UserMapper;
 import com.example.timeattendance.pojo.TimeRecord;
 import com.example.timeattendance.pojo.User;
 import com.example.timeattendance.service.UserService;
+import com.example.timeattendance.utils.MyEmail;
 import com.example.timeattendance.utils.R;
 import com.example.timeattendance.utils.TimeUtils;
 import com.example.timeattendance.utils.code;
@@ -167,6 +168,7 @@ public class UserServiceImpl implements UserService {
         Long targetid;
         for (User user:users
              ) {
+            MyEmail.SendEmail(user.getQq()+"qq.com","晚间签退通知","本次签退不计入总时长，下次记得签退");
             targetid=user.getId();
             User temp = (User) LogoutByid(user.getStudentId()).getData();
             if(status==1)a = AddTime(temp);
@@ -267,6 +269,7 @@ public class UserServiceImpl implements UserService {
             int i = timeRecordMapper.insert(timeRecord);
             if(i==1)
             {
+                MyEmail.SendEmail(user.getQq()+"qq.com","举报通知","你被他人举报了,下次记得签退");
                 System.out.println(reporterid+"举报"+reportid+"成功");
                 r.setMsg(reporterid+"举报"+reportid+"成功");
                 flag=true;
