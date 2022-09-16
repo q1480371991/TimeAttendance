@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TimeUtils {
+    //将日期字符串转换为毫秒
     public static long DatetoMillisecond(String time){
         time+=".000";
         //日期字符串转LocalDateTime
@@ -19,27 +20,37 @@ public class TimeUtils {
         long millis = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         return millis;
     }
+
+    //将毫秒转换为日期
     public static String MillisecondtoDate(long time){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = dateFormat.format(time);
         return date;
     }
+
+    //将毫秒转为小时、分
     public static String toHourandMinute(long time){
         String result;
         result=""+time/1000/60/60+"小时"+time/1000/60%60+"分钟";
         return result;
     }
+
+    //将毫秒转为小时
     public static String toHour(long time){
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         String result;
         result=""+decimalFormat.format((double)time/1000/60/60);
         return result;
     }
+
+    //计算时间差
     public static String TimeCalculate(String starttime,String endtime){
+        //转换为毫秒在相减，然后将结果转换为小时
         String result=toHour(DatetoMillisecond(endtime)-DatetoMillisecond(starttime));
         return result;
     }
 
+    //获得当前时间（不是毫秒）
     public static String GetNowtime(){
         //当前系统默认时区下的日期时间
         LocalDateTime now = LocalDateTime.now();
@@ -48,10 +59,13 @@ public class TimeUtils {
         return time;
     }
 
+
+
     public static String Gethour(String s){
         return s.substring(11,13);
     }
 
+    //检查
     public static boolean isreset(){
         boolean flage=true;
         Calendar cal = Calendar.getInstance();

@@ -18,6 +18,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @RequestMapping("/addavatar")
+    public R AddAvatar(@RequestBody User user){
+        return userService.AddAvatar(user);
+    }
+
     @RequestMapping("/report")
     public R ReportOthers(@RequestBody Reporter reporter)
     {

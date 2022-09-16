@@ -37,12 +37,10 @@ public class test1 {
 
     @Test
     public  void test1() {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setSubject("····················标题test···················");
-        simpleMailMessage.setText("····················内容test·············");
-        simpleMailMessage.setTo("2531474710@qq.com");
-//        simpleMailMessage.setFrom(username);
-//        mailSender.send(simpleMailMessage);
+        User user = new User();
+        user.setAvatar("five.jpg");
+        user.setStudentId("2100301418");
+        userService.AddAvatar(user);
     }
 
 }

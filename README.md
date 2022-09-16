@@ -414,7 +414,126 @@ POST：/adduser
 }
 ```
 
+### 自动机制
 
+使用@Scheduled
+
+
+
+1. 每天23：30自动签退，不记录
+2. 每周日23：50自动清空本周打卡时长
+3. 每周日23.40都将本周打卡记录导出到Excel表格（使用POI和easyExcel）
+
+
+
+### 自己写的工具类
+
+#### TimeUtils
+
+
+
+## 数据库
+
+### SQL
+
+#### user
+
+```sql
+/*
+ Navicat MySQL Data Transfer
+
+ Source Server         : localhost_3306
+ Source Server Type    : MySQL
+ Source Server Version : 50515
+ Source Host           : localhost:3306
+ Source Schema         : timeattendancedb
+
+ Target Server Type    : MySQL
+ Target Server Version : 50515
+ File Encoding         : 65001
+
+ Date: 16/09/2022 19:33:19
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `studentid` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `starttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `endtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `weektime` double NULL DEFAULT NULL,
+  `totaltime` double NULL DEFAULT NULL,
+  `status` int(11) NULL DEFAULT 0,
+  `qq` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `avatar` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (1, 'chen', '2100301417', '2022-09-12 17:04:46', '2022-09-12 17:04:48', 2.45, 2.45, 0, '2531474710', 'two.jpg');
+INSERT INTO `user` VALUES (2, 'lin', '2100301418', '2022-09-12 15:48:44', '2022-09-12 17:04:51', 8.33, 8.33, 0, '1480371991', 'five.jpg');
+INSERT INTO `user` VALUES (3, 'tao', '2100301419', '2022-09-12 15:48:47', '2022-09-01 10:18:15', 1.03, 1.03, 1, '1480371991', 'two.jpg');
+INSERT INTO `user` VALUES (4, 'tan', '2100301420', '2022-09-12 15:48:51', '2022-08-31 17:58:58', 2, 0, 0, '1480371991', 'two.jpg');
+INSERT INTO `user` VALUES (5, 'li', '2000301417', '2022-09-12 15:49:00', '2022-08-31 17:56:58', 4, 0.49, 0, '1480371991', 'two.jpg');
+INSERT INTO `user` VALUES (6, 'huang', '2000301418', '2022-09-12 15:49:03', '2022-08-13 23:30:00', 3, 0.35, 0, '1480371991', 'two.jpg');
+INSERT INTO `user` VALUES (7, 'zhang', '2000301419', '2022-09-12 15:49:06', '2022-08-13 23:30:00', 2, 0, 1, '1480371991', 'two.jpg');
+INSERT INTO `user` VALUES (8, 'pang', '2000301420', '2022-09-12 15:49:09', '2022-08-13 23:30:00', 1, 0, 1, '1480371991', 'two.jpg');
+INSERT INTO `user` VALUES (9, 'wu', '2000301421', '2022-09-02 15:41:59', '0000-00-00 00:00:00', 5, 0, 0, '1480371991', 'two.jpg');
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+```
+
+#### timerecord
+
+```sql
+/*
+ Navicat MySQL Data Transfer
+
+ Source Server         : localhost_3306
+ Source Server Type    : MySQL
+ Source Server Version : 50515
+ Source Host           : localhost:3306
+ Source Schema         : timeattendancedb
+
+ Target Server Type    : MySQL
+ Target Server Version : 50515
+ File Encoding         : 65001
+
+ Date: 16/09/2022 19:35:00
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for timerecord
+-- ----------------------------
+DROP TABLE IF EXISTS `timerecord`;
+CREATE TABLE `timerecord`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NULL DEFAULT NULL,
+  `starttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `endtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `recordstatus` int(11) NOT NULL DEFAULT 1 COMMENT '1：有效，0：无效 ,  2：被举报',
+  `duration` float NULL DEFAULT NULL,
+  `reporter` int(11) NULL DEFAULT 0 COMMENT '默认值为0，不是被举报下线的',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `userid`(`userid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 151 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+```
 
 
 
@@ -452,10 +571,6 @@ reconnect会通过socket.readyState来判断这个websocket连接是否正常
 如果60s内没有检测到心跳反馈则重连
 
 
-
-心跳检测机制未写完 8.31
-
-已加入心跳检测机制 9.2
 
 
 

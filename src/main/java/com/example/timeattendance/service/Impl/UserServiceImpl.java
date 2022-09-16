@@ -290,4 +290,28 @@ public class UserServiceImpl implements UserService {
         r.setFlag(flag);
         return r;
     }
+
+    @Override
+    public R AddAvatar(User newuser) {
+        boolean flag=true;
+        R r = new R();
+        if(newuser==null){
+            flag=false;
+            r.setMsg("用户不存在");
+        }else{
+            LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<User>();
+            userLambdaQueryWrapper.eq(User::getStudentId,newuser.getStudentId());
+            User user = userMapper.selectOne(userLambdaQueryWrapper);
+            user.setAvatar(newuser.getAvatar());
+            int i = userMapper.updateById(user);
+            if(i==1){
+                flag=true;
+            }else{
+                flag=false;
+            }
+        }
+
+        r.setFlag(flag);
+        return r;
+    }
 }

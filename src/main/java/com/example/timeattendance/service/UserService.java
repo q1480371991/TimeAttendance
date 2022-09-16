@@ -22,5 +22,6 @@ public interface UserService {
     public Collection<TimeRecord> GetMyTimeRecord(String userid);
     public boolean AddUser(User user);
     public R Report(String studentid,String reportid);
+    public R AddAvatar(User user);
 
 }
