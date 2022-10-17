@@ -8,6 +8,7 @@ import com.example.timeattendance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +16,7 @@ import java.util.Collection;
 
 @Service
 public class AutoJobImpl implements AutoJob {
-    private String PATH="C:\\Users\\123\\Desktop\\02-springmvc\\day02\\源码\\springmvc\\TimeAttendance";
+    String PATH = ClassUtils.getDefaultClassLoader().getResource("").getPath();
     @Autowired
     UserService userService;
     @Autowired
@@ -58,6 +59,20 @@ public class AutoJobImpl implements AutoJob {
     //每周日23.40都将本周打卡记录导出到Excel表格
     @Scheduled(cron = "00 40 23 * * 1")
     public void AutoRecordToExcel(){
+        boolean flag=true;
+        System.out.println("星期天23:40自动导出Excel开始");
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = dateFormat.format(calendar.getTime());
+        //导出数据到Excel表格
+        String filename=PATH+date+".xlsx";
+        Collection<User> users = userService.GetAll();
+        EasyExcel.write(filename,User.class).sheet("模板").doWrite(users);
+        System.out.println("星期天23:40自动导出Excel结束");
+        return ;
+    }
+
+    public void AutoRecordToExcel1(String PATH){
         boolean flag=true;
         System.out.println("星期天23:40自动导出Excel开始");
         Calendar calendar = Calendar.getInstance();

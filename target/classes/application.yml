@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/timeattendancedb
-    username: root
-    password: "020623"
+    username: timeattendancedb
+    password: "rF42LjaYdAnBpNsx"
     type: com.alibaba.druid.pool.DruidDataSource
   mail:
     host: smtp.qq.com
@@ -19,3 +19,5 @@ spring:
             required: true
     port: 465
     protocol: smtps
+server:
+  port: 8083

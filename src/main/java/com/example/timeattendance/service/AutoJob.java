@@ -4,4 +4,5 @@ public interface AutoJob {
     public boolean AutoLogout();
     public boolean AutoReset();
     public void AutoRecordToExcel();
+    public void AutoRecordToExcel1(String PATH);
 }
